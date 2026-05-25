@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手机相机</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .camera-bg {
+            background-color: #000 !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            position: relative;
+        }
+
+        /* 顶部控制栏 */
+        .camera-header {
+            background-color: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            border-bottom: none !important;
+            position: absolute;
+            top: 44px; /* 避开状态栏 */
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .camera-header .back-btn {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        /* 镜头画面预览区 */
+        .viewfinder-container {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #videoPreview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 默认前置摄像头镜像翻转，看起来更自然 */
+            transform: scaleX(-1); 
+        }
+
+        /* 底部控制面板 */
+        .camera-panel {
+            height: 140px;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 20px;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        /* 切换镜头按钮 */
+        .switch-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .switch-btn:active { background-color: rgba(255, 255, 255, 0.4); }
+
+        /* 快门大按钮 */
+        .shutter-btn-outer {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .shutter-btn-inner {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #fff;
+            transition: transform 0.1s;
+        }
+        .shutter-btn-outer:active .shutter-btn-inner {
+            transform: scale(0.9);
+        }
+
+        /* 闪光灯/通知提示悬浮窗 */
+        .camera-toast {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .camera-toast.show { opacity: 1; }
+
+        /* 用于截屏拍照的隐藏画布 */
+        #captureCanvas { display: none; }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="status-bar" style="background-color: rgba(0,0,0,0.4); color: #fff;">
+            <div class="status-left">1:40</div>
+            <div class="status-right">
+                <span>5G</span>
+                <div class="battery"><div class="battery-level"></div></div>
+            </div>
+        </div>
+        
+        <div class="app-content camera-bg">
+            
+            <div class="app-header camera-header">
+                <a href="home.html" class="back-btn" onclick="stopCamera()">〈 主页</a>
+                <div style="font-size: 16px; letter-spacing: 1px;">📷 拍照模式</div>
+                <div style="width: 30px;"></div> </div>
+
+            <div class="viewfinder-container">
+                <video id="videoPreview" autoplay playsinline></video>
+                <div class="camera-toast" id="cameraToast">📸 照片已自动下载</div>
+            </div>
+            
+            <div class="camera-panel">
+                <div style="width: 44px; height: 44px; border-radius: 8px; background-color: #222; border: 1px solid #444; display:flex; align-items:center; justify-content:center; font-size:20px;">🖼️</div>
+                
+                <div class="shutter-btn-outer" onclick="takePhoto()">
+                    <div class="shutter-btn-inner"></div>
+                </div>
+                
+                <button class="switch-btn" onclick="switchCamera()">🔄</button>
+            </div>
+
+        </div>
+
+        <canvas id="captureCanvas"></canvas>
+
+        <div class="home-indicator" style="background-color: #000;">
+            <div class="home-bar" style="background-color: #fff;"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentStream = null;
+        // 'user' 代表前置摄像头，'environment' 代表后置摄像头
+        let currentFacingMode = 'user'; 
+
+        const video = document.getElementById('videoPreview');
+        const canvas = document.getElementById('captureCanvas');
+        const toast = document.getElementById('cameraToast');
+
+        // 启动摄像头
+        async function startCamera() {
+            // 如果已有流在运行，先关闭它
+            stopCamera();
+
+            const constraints = {
+                video: {
+                    facingMode: currentFacingMode,
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
+                audio: false
+            };
+
+            try {
+                currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = currentStream;
+                
+                // 根据前后摄像头调整画面是否镜像翻转
+                if (currentFacingMode === 'user') {
+                    video.style.transform = "scaleX(-1)"; // 前置镜像
+                } else {
+                    video.style.transform = "scaleX(1)";  // 后置正常
+                }
+            } catch (error) {
+                console.error("无法打开摄像头: ", error);
+                alert("摄像头打开失败，请检查浏览器是否已授权相机权限。在部分极速浏览器或本地file://协议下可能受限，建议在本地服务器(Live Server)环境下测试。");
+            }
+        }
+
+        // 关闭摄像头流（退出或切换时释放资源）
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        // 切换前后摄像头
+        function switchCamera() {
+            currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
+            startCamera();
+        }
+
+        // 拍照并自动下载
+        function takePhoto() {
+            if (!currentStream) return;
+
+            const context = canvas.getContext('2d');
+            // 让画布大小等于视频画面的实际分辨率
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // 如果是前置摄像头，拍照时画布也需要水平翻转，确保下载出来的照片和看到的预览一致
+            if (currentFacingMode === 'user') {
+                context.translate(canvas.width, 0);
+                context.scale(-1, 1);
+            }
+
+            // 将当前视频帧绘制到画布上
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // 将画布内容转为图片Base64编码数据
+            const imageDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+
+            // 核心：创建隐藏的虚拟下载链接，实现[自动下载]
+            const downloadLink = document.createElement('a');
+            downloadLink.href = imageDataUrl;
+            // 以当前时间命名文件名
+            const timestamp = new Date().getTime();
+            downloadLink.download = `Bot_Photo_${timestamp}.jpg`;
+            
+            // 触发点击，浏览器开始自动下载
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+
+            // 弹出提示窗
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // 页面加载完成后自动开启镜头
+        window.addEventListener('DOMContentLoaded', startCamera);
+    </script>
+</body>
+</html>
