@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手机淘宝-购物车</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="shop.css">
+</head>
+<body>
+    <div class="phone-container">
+        <div class="status-bar" style="background-color: #ff5000;">
+            <div class="status-left">1:35</div>
+            <div class="status-right">
+                <span>5G</span>
+                <div class="battery"><div class="battery-level"></div></div>
+            </div>
+        </div>
+        
+        <div class="app-header shop-header" style="position: relative; display: flex; justify-content: center; align-items: center;">
+            <a href="home.html" class="back-btn" style="position: absolute; left: 14px; text-decoration: none; color: #fff; font-size: 15px; display: flex; align-items: center; gap: 3px;">
+                <span>〈</span> 主页
+            </a>
+            <div style="font-size: 17px; font-weight: bold; letter-spacing: 0.5px;">购物车(2)</div>
+        </div>
+
+        <div class="app-content shop-bg">
+            <div class="cart-container">
+                
+                <div class="cart-card" id="item-1">
+                    <div class="shop-title-bar">
+                        <input type="checkbox" class="goods-checkbox" checked onchange="calculateTotal()">
+                        <span>🏪 极客微纳电子商城 ＞</span>
+                    </div>
+                    <div class="goods-item">
+                        <div class="goods-img">📡</div>
+                        <div class="goods-detail">
+                            <div class="goods-title">高精度迈克尔逊干涉仪分束镜 麦氏干涉实验核心镀膜镜片</div>
+                            <div class="goods-spec">规格: 50x50mm定制高精版</div>
+                            <div class="goods-price-row">
+                                <span class="price-tag" data-price="420">420.00</span>
+                                <div class="quantity-counter">
+                                    <button class="counter-btn" onclick="changeQty(1, -1)">-</button>
+                                    <input type="text" class="counter-num" id="qty-1" value="1" readonly>
+                                    <button class="counter-btn" onclick="changeQty(1, 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cart-card" id="item-2">
+                    <div class="shop-title-bar">
+                        <input type="checkbox" class="goods-checkbox" checked onchange="calculateTotal()">
+                        <span>🏪 极客霸咖啡因护理店 ＞</span>
+                    </div>
+                    <div class="goods-item">
+                        <div class="goods-img">🧴</div>
+                        <div class="goods-detail">
+                            <div class="goods-title">【物理狗续命】防脱发咖啡因强韧健发洗发水 专治深夜公式推导脱发</div>
+                            <div class="goods-spec">套装: 250ml*2瓶</div>
+                            <div class="goods-price-row">
+                                <span class="price-tag" data-price="138">138.00</span>
+                                <div class="quantity-counter">
+                                    <button class="counter-btn" onclick="changeQty(2, -1)">-</button>
+                                    <input type="text" class="counter-num" id="qty-2" value="1" readonly>
+                                    <button class="counter-btn" onclick="changeQty(2, 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="settlement-bar">
+            <div class="select-all-area">
+                <input type="checkbox" id="selectAll" checked onchange="toggleSelectAll()" style="width: 18px; height: 18px; accent-color: #ff5000;">
+                <label for="selectAll">全选</label>
+            </div>
+            <div class="total-price-area">
+                <span class="total-label">合计:</span>
+                <span class="total-sum" id="totalSumText">0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="openPaySheet()">结算(<span id="selectedCount">2</span>)</button>
+        </div>
+
+        <div class="pay-overlay" id="payOverlay">
+            <div class="pay-sheet">
+                <div class="pay-header">
+                    <span class="pay-close" onclick="closePaySheet()">✕</span>
+                    <span>确认付款</span>
+                    <span style="opacity:0">✕</span>
+                </div>
+                <div class="pay-money" id="payMoneyText">0.00</div>
+                <div class="pay-method-row">
+                    <div class="pay-method-left">💳 付款方式</div>
+                    <div style="color: #333; font-weight: 500;">算力钱包 (可用余额: ⚡ 1024.50)</div>
+                </div>
+                <div class="pay-method-row">
+                    <div class="pay-method-left">🚚 配送选项</div>
+                    <div style="color: #666;">顺丰快递 免运费</div>
+                </div>
+                <button class="pay-confirm-btn" onclick="executePayment()">立即付款</button>
+            </div>
+        </div>
+
+        <div class="home-indicator" style="background-color: #fff;">
+            <div class="home-bar" style="background-color: #000;"></div>
+        </div>
+    </div>
+
+    <script>
+        function changeQty(id, delta) {
+            const qtyInput = document.getElementById(`qty-${id}`);
+            let currentQty = parseInt(qtyInput.value);
+            currentQty += delta;
+            if (currentQty < 1) currentQty = 1;
+            qtyInput.value = currentQty;
+            calculateTotal();
+        }
+
+        function toggleSelectAll() {
+            const selectAllChecked = document.getElementById('selectAll').checked;
+            const checkboxes = document.querySelectorAll('.goods-checkbox');
+            checkboxes.forEach(cb => cb.checked = selectAllChecked);
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            let count = 0;
+            const cards = document.querySelectorAll('.cart-card');
+            
+            cards.forEach(card => {
+                const checkbox = card.querySelector('.goods-checkbox');
+                if (checkbox && checkbox.checked) {
+                    const price = parseFloat(card.querySelector('.price-tag').getAttribute('data-price'));
+                    const qty = parseInt(card.querySelector('.counter-num').value);
+                    total += price * qty;
+                    count += qty;
+                }
+            });
+
+            document.getElementById('totalSumText').innerText = total.toFixed(2);
+            document.getElementById('selectedCount').innerText = count;
+            
+            const checkboxes = document.querySelectorAll('.goods-checkbox');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            document.getElementById('selectAll').checked = allChecked && checkboxes.length > 0;
+        }
+
+        function openPaySheet() {
+            const total = parseFloat(document.getElementById('totalSumText').innerText);
+            if (total <= 0) {
+                alert("你还没有勾选任何宝贝哦！");
+                return;
+            }
+            document.getElementById('payMoneyText').innerText = total.toFixed(2);
+            document.getElementById('payOverlay').classList.add('active');
+        }
+
+        function closePaySheet() {
+            document.getElementById('payOverlay').classList.remove('active');
+        }
+
+        function executePayment() {
+            const finalPay = document.getElementById('payMoneyText').innerText;
+            closePaySheet();
+            alert(`🎉 支付宝/算力钱包 扣款成功！\n成功支付：¥ ${finalPay}\n包裹正在加急打包，即将送往近代物理实验室！`);
+            
+            const cards = document.querySelectorAll('.cart-card');
+            cards.forEach(card => {
+                const checkbox = card.querySelector('.goods-checkbox');
+                if (checkbox && checkbox.checked) {
+                    card.remove();
+                }
+            });
+            calculateTotal();
+        }
+
+        calculateTotal();
+    </script>
+</body>
+</html>
