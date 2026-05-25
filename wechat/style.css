@@ -1,0 +1,310 @@
+/* ==========================================
+   BOT PHONE GLOBAL STYLESHEET (ALL IN ONE)
+   ========================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* 手机通用外壳容器 */
+.phone-container {
+    width: 375px;
+    height: 812px;
+    background-color: #000;
+    border-radius: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+    border: 12px solid #1a1a1a;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 顶部状态栏 */
+.status-bar {
+    height: 44px;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.status-right {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.battery {
+    width: 22px;
+    height: 11px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    padding: 1px;
+    display: flex;
+}
+
+.battery-level {
+    width: 70%;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 1px;
+}
+
+/* 底部主页指示条 */
+.home-indicator {
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.home-bar {
+    width: 134px;
+    height: 5px;
+    background-color: #fff;
+    border-radius: 3px;
+}
+
+/* 统一的应用内容滚动区 */
+.app-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+/* 隐藏滚动条 */
+.app-content::-webkit-scrollbar {
+    width: 0px;
+}
+
+/* 统一的应用头部 */
+.app-header {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-size: 17px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    flex-shrink: 0;
+}
+
+
+/* ==========================================
+   锁屏与主页专属样式
+   ========================================== */
+.lockscreen-bg {
+    background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 60px 30px 20px 30px;
+    height: 100%;
+    position: relative;
+    transition: transform 0.5s cubic-bezier(0.1, 0.8, 0.3, 1);
+    cursor: grab;
+}
+.lockscreen-bg:active { cursor: grabbing; }
+
+.lock-time-area { text-align: center; color: #fff; }
+.lock-date { font-size: 18px; font-weight: 500; opacity: 0.9; margin-bottom: 5px; }
+.lock-time { font-size: 72px; font-weight: 200; letter-spacing: -1px; }
+.lock-status-text { font-size: 13px; color: #a78bfa; margin-top: 5px; font-weight: 500; }
+.lock-bottom-area { text-align: center; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.swipe-arrow { font-size: 20px; animation: bounceSwipe 2s infinite; opacity: 0.8; }
+@keyframes bounceSwipe {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+.swipe-hint { font-size: 13px; opacity: 0.7; letter-spacing: 1px; }
+
+/* 主页桌面 */
+.homescreen-bg {
+    background: radial-gradient(circle at center, #1e1b4b 0%, #090514 100%);
+    padding: 30px 20px;
+}
+.widget-area {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 25px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.widget-title { font-size: 12px; color: #a78bfa; font-weight: 600; margin-bottom: 5px; text-transform: uppercase; }
+.widget-desc { font-size: 14px; color: #fff; line-height: 1.4; opacity: 0.9; }
+
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px 15px;
+    margin-top: 20px;
+}
+.app-icon-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+}
+.app-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+}
+.app-icon-wrapper:hover .app-icon { transform: scale(1.05); }
+.app-name { font-size: 12px; margin-top: 8px; text-align: center; opacity: 0.9; white-space: nowrap; }
+
+/* 各大App图标颜色 */
+.icon-wallet { background: linear-gradient(135deg, #2e2e2e, #121212); border: 1px solid #444; }
+.icon-browser { background: linear-gradient(135deg, #2c2c2e, #1c1c1e); border: 1px solid #3a3a3c; }
+
+
+/* ==========================================
+   微信应用专用核心样式
+   ========================================== */
+.wechat-bg { background-color: #ededed !important; color: #000 !important; }
+.wechat-header { background-color: #ededed; color: #000; border-bottom: 1px solid #dcdcdc !important; }
+.wechat-search-bar { background-color: #ededed; padding: 8px 10px; display: flex; justify-content: center; align-items: center; }
+.wechat-search-box { width: 100%; background-color: #fff; text-align: center; padding: 6px 0; border-radius: 6px; font-size: 13px; color: #9b9b9b; }
+
+/* 消息列表条目 */
+.chat-list-item {
+    display: flex;
+    padding: 12px 14px;
+    background-color: #fff;
+    border-bottom: 1px solid #f3f3f3;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+.chat-list-item.pinned { background-color: #f7f7f7; }
+.chat-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    background-color: #e1e1e1;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    position: relative;
+    flex-shrink: 0;
+}
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #fa5151;
+    color: #fff;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+.chat-meta { flex: 1; min-width: 0; }
+.chat-name-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.chat-user-name { font-size: 16px; font-weight: 500; color: #191919; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.chat-item-time { font-size: 12px; color: #b2b2b2; flex-shrink: 0; }
+.chat-preview-msg { font-size: 14px; color: #9c9c9c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+ /* 微信底部四项切换导航 */
+.wechat-footer-nav {
+    height: 56px;
+    background-color: #f7f7f7;
+    border-top: 1px solid #e1e1e1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-shrink: 0;
+}
+.wechat-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #515151;
+    font-size: 11px;
+}
+.wechat-nav-item.active { color: #07c160; }
+.wechat-nav-icon { font-size: 22px; margin-bottom: 2px; }
+
+/* 朋友圈专属 */
+.moments-container { background-color: #fff; color: #000; }
+.moments-header-art { width: 100%; height: 200px; background: linear-gradient(135deg, #3a3a3c, #1c1c1e); position: relative; }
+.moments-my-avatar { position: absolute; right: 15px; bottom: -20px; width: 64px; height: 64px; border-radius: 8px; border: 2px solid #fff; background-color: #576b95; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+.moments-my-name { position: absolute; right: 90px; bottom: 10px; color: #fff; font-size: 16px; font-weight: bold; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
+.feed-list { padding: 40px 15px 15px 15px; display: flex; flex-direction: column; gap: 25px; }
+.feed-item { display: flex; gap: 10px; border-bottom: 1px solid #f3f3f3; padding-bottom: 15px; }
+.feed-avatar { width: 42px; height: 42px; border-radius: 4px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.feed-body { flex: 1; }
+.feed-username { color: #576b95; font-weight: bold; font-size: 15px; margin-bottom: 4px; }
+.feed-text { font-size: 14px; color: #191919; line-height: 1.4; margin-bottom: 8px; }
+.feed-media-mock { background-color: #f3f3f3; padding: 10px; border-radius: 6px; font-size: 13px; color: #666; border-left: 3px solid #07c160; margin-bottom: 8px; }
+.feed-media-img { width: 120px; height: 120px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 40px; margin-bottom: 8px; }
+.feed-time-row { font-size: 12px; color: #b2b2b2; display: flex; justify-content: space-between; align-items: center; }
+.feed-action-btn { color: #576b95; cursor: pointer; background: #f7f7f7; padding: 2px 6px; border-radius: 4px; }
+.feed-comment-box { background-color: #f7f7f7; margin-top: 8px; padding: 6px 10px; border-radius: 4px; font-size: 13px; }
+.comment-like-line { color: #576b95; font-weight: 500; border-bottom: 1px solid #eee; padding-bottom: 4px; margin-bottom: 4px; }
+
+/* 通讯录专属 */
+.contacts-group-title { background-color: #ededed; padding: 4px 14px; font-size: 12px; color: #7f7f7f; }
+.contact-item { display: flex; align-items: center; padding: 10px 14px; background-color: #fff; border-bottom: 1px solid #f3f3f3; }
+.contact-avatar { width: 36px; height: 36px; border-radius: 4px; background-color: #e1e1e1; margin-right: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.contact-name { font-size: 15px; color: #191919; }
+
+
+/* ==========================================
+   电商购物软件专属样式
+   ========================================== */
+.shop-bg { background-color: #f4f4f4 !important; color: #333 !important; }
+.shop-header { background: linear-gradient(90deg, #ff5000, #ff8400) !important; color: #fff !important; }
+.shop-tab-nav { display: flex; background-color: #fff; padding: 10px 0; border-bottom: 1px solid #e5e5e5; flex-shrink: 0; }
+.shop-tab { flex: 1; text-align: center; font-size: 14px; color: #666; font-weight: 500; }
+.shop-tab.active { color: #ff5000; border-bottom: 2px solid #ff5000; }
+.shop-content { padding: 10px; }
+.shop-card { background-color: #fff; border-radius: 12px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+.shop-card-header { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 12px; border-bottom: 1px solid #f6f6f6; padding-bottom: 8px; }
+.shop-title-name { font-weight: bold; display: flex; align-items: center; gap: 4px; }
+.shop-order-state { color: #ff5000; font-weight: 500; }
+.shop-goods-detail { display: flex; gap: 12px; margin-bottom: 10px; }
+.goods-pic { width: 70px; height: 70px; background-color: #f7f7f7; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
+.goods-info { flex: 1; min-width: 0; }
+.goods-name { font-size: 14px; color: #333; font-weight: 500; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.goods-sku { font-size: 12px; color: #999; margin-top: 4px; }
+.goods-price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+.goods-price { font-size: 15px; font-weight: bold; color: #333; }
+.goods-count { font-size: 12px; color: #999; }
+.shop-summary { text-align: right; font-size: 13px; color: #444; border-top: 1px solid #f6f6f6; padding-top: 8px; margin-top: 5px; }
+.total-price { font-size: 16px; font-weight: bold; color: #ff5000; }
