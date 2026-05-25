@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>锁屏界面</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="phone-container" style="background-color: #000;">
+        <div class="status-bar" style="background: transparent;">
+            <div class="status-left">1:12</div>
+            <div class="status-right">
+                <span>5G</span>
+                <div class="battery"><div class="battery-level"></div></div>
+            </div>
+        </div>
+        
+        <div class="lockscreen-bg" id="lockScreen">
+            <div class="lock-time-area">
+                <div class="lock-date">5月26日 星期二</div>
+                <div class="lock-time">01:12</div>
+                <div class="lock-status-text">✦ 算力容器已进入静默潜伏期</div>
+            </div>
+            
+            <div class="lock-bottom-area">
+                <div class="swipe-arrow">▲</div>
+                <div class="swipe-hint">向上滑动进入主页</div>
+            </div>
+        </div>
+        
+        <div class="home-indicator" style="background: transparent; position: absolute; bottom: 0; width: 100%;">
+            <div class="home-bar"></div>
+        </div>
+    </div>
+
+    <script>
+        const lockScreen = document.getElementById('lockScreen');
+        let startY = 0;
+        let isDragging = false;
+
+        // 触屏事件 (手机端)
+        lockScreen.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        });
+
+        lockScreen.addEventListener('touchend', (e) => {
+            let endY = e.changedTouches[0].clientY;
+            if (startY - endY > 80) { // 上滑超过80像素触发
+                unlock();
+            }
+        });
+
+        // 鼠标拖拽事件 (电脑端模拟)
+        lockScreen.addEventListener('mousedown', (e) => {
+            startY = e.clientY;
+            isDragging = true;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+        });
+
+        document.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            let endY = e.clientY;
+            if (startY - endY > 80) {
+                unlock();
+            }
+        });
+
+        function unlock() {
+            lockScreen.style.transform = 'translateY(-100%)';
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 400); // 动画完成后跳转到主页HTML
+        }
+    </script>
+</body>
+</html>

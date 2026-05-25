@@ -1,0 +1,219 @@
+/* ==========================================
+   BOT PHONE BOOT ANIMATION - COMPLEX CSS
+   ========================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: monospace;
+}
+
+/* 手机外壳 */
+.phone-container {
+    width: 375px;
+    height: 812px;
+    background-color: #030303;
+    border-radius: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    position: relative;
+    overflow: hidden;
+    border: 12px solid #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 霓虹矩阵背景流动 */
+.boot-matrix-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, #15102a 0%, #030305 100%);
+    opacity: 0.8;
+    z-index: 1;
+}
+
+/* 核心量子意识体 */
+.core-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+/* 复杂的复合多重旋转光圈 */
+.quantum-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid transparent;
+}
+
+.ring-1 {
+    width: 160px;
+    height: 160px;
+    border-top-color: #00f2fe;
+    border-bottom-color: #4facfe;
+    animation: rotateClockwise 3s linear infinite;
+}
+
+.ring-2 {
+    width: 140px;
+    height: 140px;
+    border-left-color: #f355da;
+    border-right-color: #7000ff;
+    animation: rotateCounterClockwise 2s linear infinite;
+    opacity: 0.8;
+}
+
+.ring-3 {
+    width: 110px;
+    height: 110px;
+    border-top-color: #38ef7d;
+    border-left-color: #11998e;
+    animation: rotateClockwise 1.5s ease-in-out infinite;
+}
+
+/* 核心AI标志：呼吸闪烁的液态粒子感核心 */
+.ai-core-brain {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, #00f2fe, #7000ff);
+    border-radius: 35% 65% 60% 40% / 40% 50% 50% 60%; /* 有机液态变形 */
+    box-shadow: 0 0 30px #7000ff, inset 0 0 15px rgba(255,255,255,0.6);
+    animation: morphing 4s ease-in-out infinite, pulseGlow 1.5s infinite alternate;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+/* 文本与数字流阵列 */
+.boot-status-area {
+    margin-top: 40px;
+    z-index: 2;
+    text-align: center;
+    color: #00f2fe;
+    text-shadow: 0 0 8px rgba(0, 242, 254, 0.5);
+}
+
+.status-title {
+    font-size: 14px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    animation: textGlitch 2s infinite;
+}
+
+.status-code {
+    font-size: 11px;
+    color: #8e8e93;
+    height: 15px;
+    overflow: hidden;
+}
+
+/* 复杂的进度条体系 */
+.progress-container {
+    position: absolute;
+    bottom: 120px;
+    width: 220px;
+    height: 4px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 2px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #7000ff, #00f2fe, #38ef7d);
+    box-shadow: 0 0 10px #00f2fe;
+    animation: loadSystem 5.5s cubic-bezier(0.1, 0.6, 0.2, 1) forwards;
+}
+
+/* 亮屏一瞬间的遮罩层 */
+.flash-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    opacity: 0;
+    z-index: 10;
+    pointer-events: none;
+    animation: finalFlash 0.5s ease-out 5.6s forwards;
+}
+
+
+/* ==========================================
+   动画关键帧（KEYFRAMES）
+   ========================================== */
+
+@keyframes rotateClockwise {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes rotateCounterClockwise {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+/* 液态变形动画 */
+@keyframes morphing {
+    0% { border-radius: 35% 65% 60% 40% / 40% 50% 50% 60%; }
+    50% { border-radius: 50% 50% 30% 70% / 50% 60% 40% 50%; }
+    100% { border-radius: 35% 65% 60% 40% / 40% 50% 50% 60%; }
+}
+
+/* 核心呼吸耀斑 */
+@keyframes pulseGlow {
+    0% { transform: scale(0.95); box-shadow: 0 0 20px #7000ff; }
+    100% { transform: scale(1.05); box-shadow: 0 0 40px #00f2fe, 0 0 60px #7000ff; }
+}
+
+/* 进度条载入时序 */
+@keyframes loadSystem {
+    0% { width: 0%; }
+    20% { width: 15%; }
+    40% { width: 55%; }
+    65% { width: 62%; }
+    85% { width: 90%; }
+    100% { width: 100%; }
+}
+
+/* 文本故障艺术效果 */
+@keyframes textGlitch {
+    0%, 100% { transform: skew(0deg); }
+    20% { transform: skew(-3deg); color: #f355da; }
+    23% { transform: skew(3deg); color: #00f2fe; }
+    25% { transform: skew(0deg); }
+    70% { transform: skew(2deg); }
+    72% { transform: skew(-2deg); }
+}
+
+/* 第5.6秒白闪，完美切入锁屏 */
+@keyframes finalFlash {
+    0% { opacity: 0; }
+    40% { opacity: 1; }
+    100% { opacity: 1; }
+}

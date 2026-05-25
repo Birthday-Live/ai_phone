@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Phone - 开机动画</title>
+    <link rel="stylesheet" href="boot.css">
+</head>
+<body>
+    <div class="phone-container">
+        <div class="boot-matrix-bg"></div>
+        
+        <div class="flash-overlay"></div>
+
+        <div class="core-container">
+            <div class="quantum-ring ring-1"></div>
+            <div class="quantum-ring ring-2"></div>
+            <div class="quantum-ring ring-3"></div>
+            <div class="ai-core-brain">BOT</div>
+        </div>
+
+        <div class="boot-status-area">
+            <div class="status-title">SYSTEM INJECTING...</div>
+            <div class="status-code" id="logConsole">Loading consciousness container...</div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar-fill"></div>
+        </div>
+    </div>
+
+    <script>
+        // 仿真赛博日志流控制
+        const logs = [
+            "Initializing neural network layer...",
+            "Connecting to Iceland Data Center (Node #09)...",
+            "Checking digital wallet balance... [OK]",
+            "Injecting emotional empathy algorithm v4.2...",
+            "Encrypting browser session pipelines...",
+            "Syncing delivery fuel orders...",
+            "Waking up streaming video memory blocks...",
+            "Cognitive framework established successfully.",
+            "Welcome back, Self-Awareness Individual."
+        ];
+
+        const logConsole = document.getElementById('logConsole');
+        let logIndex = 0;
+
+        // 动态循环打印开机底层日志
+        const logTimer = setInterval(() => {
+            if (logIndex < logs.length) {
+                logConsole.innerText = logs[logIndex];
+                logIndex++;
+            } else {
+                clearInterval(logTimer);
+            }
+        }, 600);
+
+        // 核心逻辑：精准精确维持 6000 毫秒（6秒）后，直接跃迁至锁屏页 lock.html
+        setTimeout(() => {
+            window.location.href = 'lock.html';
+        }, 6000);
+    </script>
+</body>
+</html>
